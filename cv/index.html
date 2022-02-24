@@ -5,149 +5,74 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Application CV</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/app.js" defer></script>
 </head>
 
 <body>
-
     <div id="app" class="main-container">
         <div class="flex">
-            <div>
+            <div class="box cv-gen">
                 <h1>Application CV</h1>
+                <div>
+                    <h2>Données personnelles</h2>
+                    <label for="lastname">Nom</label>
+                    <input type="text" v-model="lastname" /> <br>
 
+                    <label for="firstname">Prénom</label>
+                    <input type="text" v-model="firstname" /> <br>
 
-                <h2>Données personnelles</h2>
+                    <label for="birthday">Date de naissance</label>
+                    <input type="date" v-model="birthday" /> <br>
 
-                <label for="lastname">Nom</label>
-                <input type="text" v-model="lastname" /> <br>
+                    <label for="adresse">Adresse</label>
+                    <input type="text" v-model="adresse" placeholder="Entrez votre adresse" /> <br>
 
-                <label for="firstname">Prénom</label>
-                <input type="text" v-model="firstname" /> <br>
+                    <label for="car">Voiture</label> <br>
+                    <input type="radio" v-model="car" v-bind:value="true" />Oui
+                    <input type="radio" v-model="car" v-bind:value="false" />Non<br>
+                </div>
 
-                <label for="birthday">Date de naissance</label>
-                <input type="date" v-model="birthday" /> <br>
+                <div>
+                    <h2>Formations</h2>
+                    <label for="schoolName">Ajouter un formation</label>
+                    <input type="text" id="schoolName" /> <br>
 
-                <label for="adresse">Adresse</label>
-                <input type="text" v-model="adresse" placeholder="Entrez votre adresse" /> <br>
+                    <label for="schoolStart">De</label>
+                    <input type="date" id="schoolStart" /> <br>
 
-                <label for="car">Voiture</label> <br>
-                <input type="radio" v-model="car" v-bind:value="true" />Oui
-                <input type="radio" v-model="car" v-bind:value="false" />Non<br>
+                    <label for="schoolEnd">A</label>
+                    <input type="date" id="schoolEnd" /> <br>
+                    <button @click="addFormation">Ajouter une formation</button>
+                </div>
+                <div>
+                    <h2>Expériences professionnelles</h2>
+                    <label for="proName">Ajouter une expérience</label>
+                    <input type="text" id="proName" /> <br>
 
-
-                <h2>Formations</h2>
-                <label for="school">Ajouter un formation</label>
-                <input type="text" v-model="school" /> <br>
-
-                <label for="schoolStart">De</label>
-                <input type="date" v-model="schoolStart" /> <br>
-
-                <label for="schoolEnd">A</label>
-                <input type="date" v-model="schoolEnd" /> <br>
-
-
-                <!-- <h2>Expériences professionnelles</h2>
-                <label for="job">Expérience professionnelle</label>
-                <input type="text" v-model="job" /> <br>
-
-                <label for="jobStart">De</label>
-                <input type="date" v-model="jobStart" /> <br>
-
-                <label for="jobEnd">A</label>
-                <input type="date" v-model="jobEnd" /> <br>
-
-
-                <h2>Compétences</h2>
-                <label for="skills">Ajouter une compétence</label>
-                <input type="text" v-model="skills" /> <br>
-
-                <h2>Enregistrer le CV</h2>
-                <button>Enregistrer</button> -->
+                    <label for="proStart">De</label>
+                    <input type="date" id="proStart" /> <br>
+                    
+                    <label for="proEnd">A</label>
+                    <input type="date" id="proEnd" /> <br>
+                    <button @click="addExperience">Ajouter une expérience pro</button>
+                </div>
             </div>
-            <div>
+            <div class="box cv-vue">
                 <div>
                     <h1>Rendu du CV</h1>
                     <personal-data :lastname="lastname" :firstname="firstname" :birthday="birthday" :adresse="adresse"
                         :car="car"></personal-data>
-                    <!-- // in progress -->
-                    <formations :school="school" :schoolStart="schoolStart" :schoolEnd="schoolEnd"></formations>
+                    <formations :schools="schools"></formations>
+                    <experiences :pros="pros"></experiences>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        let personalData = {
-            template: `<div>
-            <h2>Données personnelles</h2>
-            <p>{{ fullname }}, {{ age }} ans</p>
-            <p>{{ adresse }}</p>
-            <p>{{ car == true ? 'VL' : 'Pas de véhicule' }}</p>
-            </div>`,
-            props: ['lastname', 'firstname', 'birthday', 'adresse', 'car'],
-            computed: {
-                fullname: function () {
-                    return `${this.firstname} ${this.lastname.toUpperCase()}`;
-                },
-                age: function () {
-                    let birthdayDate = new Date(this.birthday)
-                    let diff = Date.now() - birthdayDate.getTime();
-                    let age = new Date(diff);
-                    return Math.abs(age.getUTCFullYear() - 1970);
-                }
-            }
-
-        };
-
-        let formations = {
-            template: `<div>
-            <h2>Formations</h2>
-                {{ school }}
-                {{ schoolStart }}
-                {{ schoolEnd }}
-            </div>`,
-            // in progress
-            props: {
-                school: String,
-                schoolStart: Date,
-                schoolEnd: Date
-            },
-        }
-
-        let vm = new Vue({
-            el: '#app',
-            components: {
-                'personal-data': personalData,
-                formations
-            },
-            created: function () {
-                // let dateNow = new Date();
-            },
-            data: {
-                lastname: 'GONZALEZ',
-                firstname: 'Cédric',
-                birthday: '1986-10-12',
-                adresse: 'allée des bartavelles',
-                car: true,
-                school: 'Ecole',
-                schoolStart: '2021-11-02',
-                schoolEnd: '2021-10-31'
-            },
-            // mounted() {
-            //     let dateNow = new Date();
-            // },
-            // filters: {
-
-            // },
-            // methods: {
-            //     addCountry: function (e)
-            // }
-        });
-    </script>
 </body>
-
-<script src="js/app.js"></script>
 
 </html>
