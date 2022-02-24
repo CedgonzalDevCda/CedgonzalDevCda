@@ -44,6 +44,22 @@ let Experiences = {
     `,
     props: ['pros']
 }
+//Component - Compétences
+let Competences = {
+    template: `
+    <div>
+        <h2>Compétences</h2>
+        <ul>
+            <li v-for="skill of skills">{{ skill.name }}</li>
+        </ul>
+    </div>
+    `,
+    props: ['skills']
+}
+//Component - Enregistrement
+let Enregistrement = {
+
+}
 
 // Vuejs - Root-Element
 let vm = new Vue({
@@ -51,7 +67,9 @@ let vm = new Vue({
     components: {
         'personal-data': PersonalData,
         'formations': Formations,
-        'experiences': Experiences
+        'experiences': Experiences,
+        'competences': Competences,
+        'enregistrement': Enregistrement
     },
     data: {
         // linked to HTML-Element - Données personnelles
@@ -63,7 +81,9 @@ let vm = new Vue({
         // linked to HTML-Element - Formations
         schools: [],
         // linked to HTML-Element - Expériences professionnelles
-        pros: []
+        pros: [],
+        // linked to HTML-Element - Compétences
+        skills: []
     },
     methods:{
         addFormation: function() {
@@ -101,6 +121,24 @@ let vm = new Vue({
             proName.value = ''
             proStart.value = ''
             proEnd.value = ''
+        },
+        addCompetence: function() {
+            //select datas contained on array skills
+            let skillName = document.querySelector('#skillName')
+
+            //push inputs_skills in Array
+            this.skills.push({
+                name: skillName.value
+                })
+
+            //clear input_skills
+            skillName.value = ''
+
+        },
+        registerCv: function(){
+            //convert on localStorage
+            localStorage.setItem('cv', JSON.stringify(this.$data))
         }
+
     }
 });
