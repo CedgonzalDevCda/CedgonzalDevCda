@@ -71,6 +71,13 @@ let vm = new Vue({
         'competences': Competences,
         'enregistrement': Enregistrement
     },
+    created: function () {
+        if (localStorage.getItem('cv') !== null) {
+            let datas = JSON.parse(localStorage.getItem('cv'))
+            for (data in datas) {
+                this[data] = datas[data]
+            }
+        }},
     data: {
         // linked to HTML-Element - Données personnelles
         lastname: 'GONZALEZ',
@@ -135,10 +142,13 @@ let vm = new Vue({
             skillName.value = ''
 
         },
-        registerCv: function(){
-            //convert on localStorage
+        registerCv: function() {
+            //convert $data in JSON on localStorage
             localStorage.setItem('cv', JSON.stringify(this.$data))
+        },
+        resetCv: function(){
+            //delete $data previously saved on localStorage
+            localStorage.clear()
         }
-
     }
 });
